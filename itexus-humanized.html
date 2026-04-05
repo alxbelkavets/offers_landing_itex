@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Itexus — From Idea to Proof in 72 Hours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:           #25BB4D;
+      --primary-ctr:       #1a9039;
+      --primary-gradient:  linear-gradient(135deg, #25BB4D 0%, #1a9039 100%);
+      --brand-light:       #E8F8ED;
+
+      --surface:           #f7f9fc;
+      --surface-lowest:    #ffffff;
+      --surface-low:       #f2f4f7;
+      --surface-container: #eceef1;
+
+      --on-surface:        #191c1e;
+      --on-surface-muted:  #5c6370;
+
+      --shadow-sm:   0 8px 32px rgba(25, 28, 30, 0.05);
+      --shadow-md:   0 20px 56px rgba(25, 28, 30, 0.07);
+      --shadow-lg:   0 40px 80px rgba(25, 28, 30, 0.09);
+
+      --r-md: 0.75rem;
+      --r-lg: 1rem;
+      --r-xl: 1.5rem;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--on-surface);
+      background: var(--surface-lowest);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 68px;
+      background: rgba(25, 28, 30, 0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .nav-left { display: flex; align-items: center; gap: 48px; }
+    .logo img { height: 28px; width: auto; display: block; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      background: var(--primary-gradient);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: var(--r-md);
+      font-weight: 600; font-size: 0.875rem;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero-wrap {
+      background: #1a1d1e;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.15fr 0.85fr;
+      gap: 56px; align-items: stretch;
+      padding: 0 48px 0 64px;
+      min-height: 580px;
+    }
+
+    .hero-overline {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--primary);
+      background: rgba(37,187,77,0.12);
+      padding: 6px 14px;
+      border-radius: var(--r-md);
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(2.4rem, 3.6vw, 3.75rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.025em;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: normal; color: var(--primary); }
+    .hero h1 s {
+      text-decoration: line-through;
+      color: rgba(255,255,255,0.28);
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 1.05rem; color: rgba(255,255,255,0.55);
+      max-width: 480px; margin-bottom: 40px; line-height: 1.75;
+    }
+    .hero p strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--primary-gradient);
+      color: #fff; padding: 14px 32px;
+      border-radius: var(--r-md);
+      font-weight: 700; font-size: 0.95rem;
+      text-decoration: none;
+      box-shadow: 0 6px 24px rgba(37, 187, 77, 0.32);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(37, 187, 77, 0.38); }
+
+    .btn-ghost-light {
+      display: inline-block;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 14px 32px; border-radius: var(--r-md);
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-ghost-light:hover { background: rgba(255,255,255,0.13); }
+
+    .hero-visual {
+      position: relative;
+      display: flex; align-items: stretch;
+      overflow: hidden;
+    }
+    .hero-rocket-img {
+      width: 100%; height: 100%;
+      min-height: 520px;
+      display: block;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .hero-visual::before,
+    .hero-visual::after {
+      content: ''; position: absolute; z-index: 2; pointer-events: none;
+    }
+    .hero-visual::before {
+      inset: 0;
+      background:
+        linear-gradient(to right,  #1a1d1e 0%, transparent 22%),
+        linear-gradient(to bottom, #1a1d1e 0%, transparent 14%),
+        linear-gradient(to top,    #1a1d1e 0%, transparent 14%);
+    }
+    .hero-visual::after {
+      inset: 0;
+      background: linear-gradient(to left, #1a1d1e 0%, transparent 12%);
+    }
+
+    /* ── TECH BAR ── */
+    .tech-bar {
+      background: var(--surface-low);
+      padding: 26px 48px;
+    }
+    .tech-bar-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; gap: 40px;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .tech-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--on-surface-muted);
+      flex-shrink: 0;
+    }
+    .tech-logos { display: flex; gap: 36px; flex-wrap: wrap; align-items: center; }
+    .tech-logo {
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--on-surface-muted); opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+    .tech-logo:hover { opacity: 0.9; }
+
+    /* ── SECTION ATOMS ── */
+    .section-overline {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      color: var(--on-surface); margin-bottom: 18px;
+      line-height: 1.15;
+    }
+    .section-desc {
+      font-size: 1rem; color: var(--on-surface-muted);
+      max-width: 540px; line-height: 1.75;
+    }
+
+    /* ── OFFERS ── */
+    .offers-section {
+      background: var(--surface);
+      padding: 96px 48px;
+    }
+    .offers-header {
+      max-width: 1280px; margin: 0 auto 56px;
+      text-align: center;
+    }
+    .offers-header .section-desc { margin: 0 auto; }
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px; max-width: 1280px; margin: 0 auto;
+    }
+    .offer-card {
+      background: var(--surface-lowest);
+      border-radius: var(--r-xl);
+      padding: 40px 36px;
+      display: flex; flex-direction: column;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .offer-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
+    }
+    .offer-card.featured {
+      background: #e8f5ed;
+      outline: 2px solid rgba(37,187,77,0.45);
+      outline-offset: -2px;
+    }
+    .featured-tag {
+      position: absolute; top: -14px; left: 36px;
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 16px; border-radius: 100px;
+    }
+    .offer-tag {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--primary); margin-bottom: 12px;
+    }
+    .offer-card h3 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.45rem; font-weight: 700;
+      letter-spacing: -0.01em; margin-bottom: 8px;
+      color: var(--on-surface);
+    }
+    .offer-price {
+      font-family: 'Manrope', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .offer-price span {
+      font-size: 1rem; font-weight: 600;
+      color: var(--on-surface-muted);
+      letter-spacing: 0;
+    }
+    .offer-card.featured .offer-price { color: #1a9e3f; }
+    .offer-tagline {
+      font-size: 0.875rem; color: var(--on-surface-muted);
+      margin-bottom: 28px; line-height: 1.6;
+      padding-left: 12px;
+      border-left: 3px solid rgba(37,187,77,0.35);
+      font-style: italic;
+    }
+    .offer-divider {
+      height: 1px;
+      background: rgba(37,187,77,0.2);
+      margin: 0 0 24px;
+    }
+    .offer-list-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--on-surface-muted); margin-bottom: 14px;
+    }
+    .offer-list { list-style: none; margin-bottom: 24px; flex: 1; }
+    .offer-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.875rem; margin-bottom: 10px;
+      color: var(--on-surface); line-height: 1.5;
+    }
+    .offer-list li::before {
+      content: '';
+      width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='10' fill='%23E8F8ED'/%3E%3Cpath d='M6 10l3 3 5-5' stroke='%2325BB4D' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E") no-repeat center/contain;
+    }
+    .outcome-chip {
+      background: rgba(37,187,77,0.1);
+      border-radius: var(--r-md);
+      padding: 14px 18px; margin-bottom: 28px;
+      font-size: 0.875rem; color: var(--on-surface); line-height: 1.5;
+    }
+    .offer-card:not(.featured) .outcome-chip { background: var(--surface-low); }
+    .outcome-chip strong {
+      display: block; margin-bottom: 4px;
+      font-size: 0.68rem; text-transform: uppercase;
+      letter-spacing: 0.07em; color: var(--primary); font-weight: 700;
+    }
+    .cta-btn {
+      display: block; text-align: center;
+      background: var(--surface-low);
+      color: var(--on-surface);
+      padding: 14px 24px; border-radius: var(--r-md);
+      font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; margin-top: auto;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .cta-btn:hover { background: var(--surface-container); transform: translateY(-1px); }
+    .offer-card.featured .cta-btn {
+      background: var(--primary-gradient);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(37, 187, 77, 0.35);
+    }
+    .offer-card.featured .cta-btn:hover { opacity: 0.9; }
+
+    /* ── CONTRAST BAR (Old Way / New Way) ── */
+    .contrast-section {
+      background: var(--on-surface);
+      padding: 96px 48px;
+    }
+    .contrast-inner { max-width: 1280px; margin: 0 auto; }
+    .contrast-header { margin-bottom: 60px; }
+    .contrast-header .section-overline { color: var(--primary); }
+    .contrast-header .section-title { color: #fff; }
+    .contrast-header .section-desc { color: rgba(255,255,255,0.55); }
+
+    .contrast-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      border-radius: var(--r-xl); overflow: hidden;
+    }
+    .contrast-col {
+      padding: 40px 36px;
+      background: rgba(255,255,255,0.04);
+    }
+    .contrast-col.new-way {
+      background: rgba(37,187,77,0.1);
+      border: 1px solid rgba(37,187,77,0.2);
+      border-radius: 0 var(--r-xl) var(--r-xl) 0;
+    }
+    .contrast-col-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .contrast-col.old-way .contrast-col-label { color: rgba(255,255,255,0.3); }
+    .contrast-col.new-way .contrast-col-label { color: var(--primary); }
+    .contrast-list { list-style: none; }
+    .contrast-list li {
+      font-size: 0.9rem; line-height: 1.5;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .contrast-list li:last-child { border-bottom: none; }
+    .contrast-col.old-way .contrast-list li { color: rgba(255,255,255,0.4); }
+    .contrast-col.new-way .contrast-list li { color: rgba(255,255,255,0.85); }
+    .icon-cross { color: rgba(255,80,80,0.7); flex-shrink: 0; font-style: normal; }
+    .icon-check { color: var(--primary); flex-shrink: 0; font-style: normal; font-weight: 700; }
+
+    /* ── METRICS ── */
+    .metrics-section {
+      background: var(--surface-lowest);
+      padding: 96px 48px;
+      border-top: 1px solid var(--surface-container);
+    }
+    .metrics-inner { max-width: 1280px; margin: 0 auto; }
+    .metrics-header { margin-bottom: 60px; }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2px;
+      background: rgba(25,28,30,0.06);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+    }
+    .metric-item {
+      background: var(--surface-lowest);
+      padding: 40px 36px;
+    }
+    .metric-num {
+      font-family: 'Manrope', sans-serif;
+      font-size: 3rem; font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--primary); margin-bottom: 8px;
+    }
+    .metric-label {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--on-surface); margin-bottom: 8px;
+    }
+    .metric-desc {
+      font-size: 0.85rem; color: var(--on-surface-muted); line-height: 1.55;
+    }
+
+    /* ── HOW WE WORK ── */
+    .how-section {
+      background: var(--surface);
+      padding: 96px 48px;
+    }
+    .how-inner { max-width: 1280px; margin: 0 auto; }
+    .how-header { text-align: center; margin-bottom: 60px; }
+    .how-header .section-desc { margin: 0 auto; }
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .pillar {
+      background: var(--surface-lowest);
+      border-radius: var(--r-xl);
+      padding: 32px 28px;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .pillar:hover {
+      background: var(--surface-lowest);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(-2px);
+    }
+    .pillar-icon {
+      width: 48px; height: 48px; border-radius: var(--r-md);
+      background: var(--brand-light);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--primary);
+      font-family: 'Manrope', sans-serif;
+    }
+    .pillar h4 {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--on-surface); margin-bottom: 10px;
+    }
+    .pillar p {
+      font-size: 0.875rem; color: var(--on-surface-muted); line-height: 1.65;
+    }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      background: var(--on-surface);
+      padding: 100px 48px;
+      text-align: center;
+    }
+    .cta-inner { max-width: 640px; margin: 0 auto; }
+    .cta-section .section-overline { display: block; margin-bottom: 16px; }
+    .cta-section h2 {
+      font-family: 'Manrope', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      color: #fff; margin-bottom: 20px; line-height: 1.2;
+    }
+    .cta-section h2 em { font-style: normal; color: var(--primary); }
+    .cta-section p {
+      color: rgba(255,255,255,0.6);
+      max-width: 480px; margin: 0 auto 48px;
+      font-size: 1.05rem; line-height: 1.75;
+    }
+    .cta-section p strong { color: rgba(255,255,255,0.85); }
+    .cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-ghost-dark {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      padding: 14px 32px; border-radius: var(--r-md);
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-ghost-dark:hover { background: rgba(255,255,255,0.17); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface-low);
+      padding: 36px 48px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo img {
+      height: 22px; width: auto;
+      opacity: 0.35; filter: grayscale(1) invert(0);
+    }
+    .footer-copy {
+      font-size: 0.825rem; color: var(--on-surface-muted);
+    }
+    .footer-copy a { color: var(--on-surface-muted); text-decoration: none; }
+    .footer-copy a:hover { color: var(--on-surface); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding: 56px 28px 0; gap: 40px; min-height: auto; }
+      .hero-content { padding: 0 0 56px !important; }
+      .hero-visual { min-height: 320px; }
+      .contrast-grid { grid-template-columns: 1fr; }
+      .contrast-col.new-way { border-radius: 0 0 var(--r-xl) var(--r-xl); }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 56px 20px 48px; }
+      .offers-section, .contrast-section, .metrics-section, .how-section, .cta-section { padding: 72px 20px; }
+      .tech-bar { padding: 22px 20px; }
+      .metrics-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 28px 20px; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a class="logo" href="https://itexus.com" target="_blank">
+      <img src="https://cdn-ilealml.nitrocdn.com/iADCJgLyHPYRnXrBPFPenSkStEfInuLX/assets/images/optimized/rev-b78cdc6/itexus.com/wp-content/themes/itexus_theme/logo-white-itexus.svg" alt="Itexus" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#why">Why now</a></li>
+      <li><a href="#offers">Offers</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="https://itexus.com" target="_blank">Work</a></li>
+    </ul>
+  </div>
+  <a class="nav-cta" href="mailto:contact@itexus.com?subject=Startup Package Inquiry">Let's talk</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero">
+
+    <div class="hero-content" style="display:flex;flex-direction:column;justify-content:center;padding:80px 0;">
+      <div class="hero-overline">The discovery phase is dead</div>
+      <h1>Stop paying for<br><em>workshops.</em><br>Start getting proof.</h1>
+      <p>AI has changed how fast you can go from idea to working software. <strong>The six-week discovery process hasn't caught up.</strong> We stopped running it two years ago and built something that actually fits where founders are today.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#offers">See what we built instead →</a>
+        <a class="btn-ghost-light" href="mailto:contact@itexus.com?subject=Discovery Call">Talk to a founder advisor</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <img class="hero-rocket-img" src="Screenshot 2026-04-03 at 12.43.32.png" alt="Itexus launch rocket" />
+    </div>
+
+  </div>
+</div>
+
+<!-- TECH BAR -->
+<div class="tech-bar">
+  <div class="tech-bar-inner">
+    <span class="tech-label">Built with</span>
+    <div class="tech-logos">
+      <span class="tech-logo">Figma</span>
+      <span class="tech-logo">Firebase</span>
+      <span class="tech-logo">Jira</span>
+      <span class="tech-logo">Datadog</span>
+      <span class="tech-logo">OpenAI</span>
+      <span class="tech-logo">HubSpot</span>
+    </div>
+  </div>
+</div>
+
+<!-- OFFERS -->
+<section id="offers" class="offers-section">
+
+  <div class="offers-header">
+    <div class="section-overline">Three packages. Each answers one question.</div>
+    <h2 class="section-title">We stopped running discovery.<br>Here's what we do instead.</h2>
+    <p class="section-desc">Most agencies still charge for the same six-week process they ran in 2015. Every package below ends with something real — not a document that describes what you said you wanted.</p>
+  </div>
+
+  <div class="offers-grid">
+
+    <!-- OFFER 01 -->
+    <div class="offer-card">
+      <div class="offer-tag">The 72-hour reality check</div>
+      <h3>Is my idea actually worth pursuing?</h3>
+      <div class="offer-price">$3,000 <span>/ fixed</span></div>
+      <p class="offer-tagline">You've got an idea. You don't need a workshop — you need an engineer who's shipped 100+ products to give you a straight answer.</p>
+      <div class="offer-divider"></div>
+
+      <div class="offer-list-label">What you get</div>
+      <ul class="offer-list">
+        <li>A working proof of concept, not slides</li>
+        <li>A clear read on the two assumptions most likely to sink this idea</li>
+        <li>A recorded walkthrough you can send to investors or co-founders</li>
+        <li>Real scope, timeline, and budget with specific numbers — not a range that could mean anything</li>
+        <li>A straight recommendation: keep going, change direction, or stop — with the reasoning</li>
+      </ul>
+
+      <div class="outcome-chip">
+        <strong>The one question this answers</strong>
+        Is this actually worth building? You'll have a real answer in 72 hours.
+      </div>
+
+      <a class="cta-btn" href="mailto:contact@itexus.com?subject=72-Hour Reality Check Inquiry">Get the honest answer →</a>
+    </div>
+
+    <!-- OFFER 02 (featured) -->
+    <div class="offer-card featured">
+      <div class="featured-tag">Where most founders start</div>
+      <div class="offer-tag">The Founder Clarity Sprint</div>
+      <h3>What should I build first?</h3>
+      <div class="offer-price">$7,000 <span>/ fixed</span></div>
+      <p class="offer-tagline">Most founders burn their first $50k on the wrong thing. This sprint happens before that.</p>
+      <div class="offer-divider"></div>
+
+      <div class="offer-list-label">What you get</div>
+      <ul class="offer-list">
+        <li>A product frame: what you're building, for whom, and why it beats what's already out there</li>
+        <li>The features that actually belong in V1, and the ones that don't yet</li>
+        <li>A clickable prototype to put in front of real users this week</li>
+        <li>Where AI changes your position and where it changes nothing — honest assessment, not hype</li>
+        <li>Stack, architecture, and key technical tradeoffs documented in writing</li>
+        <li>A phased roadmap you can fund in stages, not all at once</li>
+      </ul>
+
+      <div class="outcome-chip">
+        <strong>The one question this answers</strong>
+        What exactly should I build first? You leave with a clear answer and the plan to execute it.
+      </div>
+
+      <a class="cta-btn" href="mailto:contact@itexus.com?subject=Founder Clarity Sprint Inquiry">Start the sprint →</a>
+    </div>
+
+    <!-- OFFER 03 -->
+    <div class="offer-card">
+      <div class="offer-tag">The Launchpad Build</div>
+      <h3>Can I ship something real this month?</h3>
+      <div class="offer-price">$15,000 <span>/ fixed</span></div>
+      <p class="offer-tagline">This is where we actually ship something. A real URL. Real users. Something you can send a link to.</p>
+      <div class="offer-divider"></div>
+
+      <div class="offer-list-label">What you get</div>
+      <ul class="offer-list">
+        <li>Your first production version, live and deployed</li>
+        <li>Core user flows built and tested, start to finish</li>
+        <li>A backend that handles your first hundred users without falling over</li>
+        <li>A live URL you can share with investors, users, or anyone you need to convince</li>
+        <li>QA and go-live support through launch day</li>
+        <li>A prioritized backlog for everything that comes after</li>
+      </ul>
+
+      <div class="outcome-chip">
+        <strong>The one question this answers</strong>
+        Can I have something real to show this month? Yes — with a link to prove it.
+      </div>
+
+      <a class="cta-btn" href="mailto:contact@itexus.com?subject=Launchpad Build Inquiry">Ship it this month →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- OLD WAY VS NEW WAY -->
+<section id="why" class="contrast-section">
+  <div class="contrast-inner">
+
+    <div class="contrast-header">
+      <div class="section-overline">Why we built these offers</div>
+      <h2 class="section-title" style="color:#fff;">The old playbook stopped working.</h2>
+      <p class="section-desc">The classic discovery process made sense when shipping software took months. That is not the constraint anymore. We spent two years watching good founders lose momentum to workshops and documents. These packages are what came out the other side.</p>
+    </div>
+
+    <div class="contrast-grid">
+      <div class="contrast-col old-way">
+        <div class="contrast-col-label">Classic discovery</div>
+        <ul class="contrast-list">
+          <li><i class="icon-cross">✕</i> 4–6 weeks of workshops before anything gets built</li>
+          <li><i class="icon-cross">✕</i> A requirements document that is outdated by the time you finish reading it</li>
+          <li><i class="icon-cross">✕</i> $15,000–$30,000 spent before a single line of code</li>
+          <li><i class="icon-cross">✕</i> Deliverables that describe what you said you wanted — not whether you should build it</li>
+          <li><i class="icon-cross">✕</i> By the time it wraps up, half your founding energy is already spent</li>
+          <li><i class="icon-cross">✕</i> Designed around the agency's workflow, not yours</li>
+        </ul>
+      </div>
+      <div class="contrast-col new-way">
+        <div class="contrast-col-label">Our sprint packages</div>
+        <ul class="contrast-list">
+          <li><i class="icon-check">✓</i> Real output in 72 hours to 4 weeks</li>
+          <li><i class="icon-check">✓</i> A working prototype or shipped product you can put in front of people</li>
+          <li><i class="icon-check">✓</i> Fixed price, no surprises</li>
+          <li><i class="icon-check">✓</i> Each sprint answers the one question that matters at this stage</li>
+          <li><i class="icon-check">✓</i> You finish with a specific plan for what comes next, not a vague summary</li>
+          <li><i class="icon-check">✓</i> Built around how fast a small, focused team can actually move today</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="metrics-section">
+  <div class="metrics-inner">
+
+    <div class="metrics-header">
+      <div class="section-overline">15 years in. 100+ startups shipped.</div>
+      <h2 class="section-title">We've been here before.</h2>
+      <p class="section-desc">We've watched a lot of ideas survive or die on how the early decisions got made. These numbers come from actual projects, not estimates.</p>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-num">100+</div>
+        <div class="metric-label">Startups shipped</div>
+        <div class="metric-desc">SaaS, fintech, healthcare, logistics. We've helped founders go from idea to live product across a lot of different industries.</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">72h</div>
+        <div class="metric-label">From idea to proof</div>
+        <div class="metric-desc">What used to need three weeks of workshops takes three days. That is what happens when you stop running the workshops.</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">15+</div>
+        <div class="metric-label">Years of scar tissue</div>
+        <div class="metric-desc">We know where the bodies are buried — and which ones were avoidable.</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-num">3×</div>
+        <div class="metric-label">Faster than classic discovery</div>
+        <div class="metric-desc">We cut ceremony, not corners. Less process, more product.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section id="how" class="how-section">
+  <div class="how-inner">
+
+    <div class="how-header">
+      <div class="section-overline">No discovery theater</div>
+      <h2 class="section-title">How we actually work</h2>
+      <p class="section-desc">Every principle below came from watching something go wrong with the old model.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">→</div>
+        <h4>If it can't be demoed, it doesn't count</h4>
+        <p>Every sprint ends with something you can see, touch, or send to a user. Status calls and requirements docs stay out of it.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">$</div>
+        <h4>You're not betting big to find out</h4>
+        <p>You don't have to commit $100k to figure out if we're the right fit. Each package is a standalone engagement with a fixed price and a clear finish line.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">÷</div>
+        <h4>AI changed the hours, not the quality</h4>
+        <p>What used to take three engineers three weeks takes one engineer three days now. We charge you for fewer hours. The math got better for everyone.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">○</div>
+        <h4>One team, start to finish</h4>
+        <p>Product, design, and engineering together from day one. No handoffs, no gaps between what you said and what got built.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">↗</div>
+        <h4>You leave knowing what's next</h4>
+        <p>Every package ends with a real recommendation for the next step — a specific decision with the reasoning behind it, not a summary slide.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">✕</div>
+        <h4>We'll say it if the answer is no</h4>
+        <p>We've done this enough times to know when an idea needs more validation before it ships. We'll tell you, even if it's not what you want to hear.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <span class="section-overline">Your idea has been waiting long enough.</span>
+    <h2>Every week without real feedback<br>is a week of <em>guessing.</em></h2>
+    <p>Let's spend 30 minutes together. We'll tell you which package fits, what we'd actually build, and whether we're the right team for this. <strong>No sales pitch.</strong></p>
+    <div class="cta-actions">
+      <a class="btn-primary" href="mailto:contact@itexus.com?subject=30-Minute Founder Call">Book a 30-minute call →</a>
+      <a class="btn-ghost-dark" href="mailto:contact@itexus.com">Or just email us</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="https://itexus.com" target="_blank">
+    <img src="https://cdn-ilealml.nitrocdn.com/iADCJgLyHPYRnXrBPFPenSkStEfInuLX/assets/images/optimized/rev-b78cdc6/itexus.com/wp-content/themes/itexus_theme/logo-white-itexus.svg" alt="Itexus" />
+  </a>
+  <p class="footer-copy">
+    &copy; 2026 <a href="https://itexus.com" target="_blank">Itexus</a> — Outsourced Software Development. All rights reserved.
+  </p>
+</footer>
+
+</body>
+</html>
